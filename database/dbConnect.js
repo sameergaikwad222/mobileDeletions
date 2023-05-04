@@ -1,5 +1,6 @@
 const { Sequelize } = require("sequelize");
-const config = require("../config/config.json")[process.env.NODE_ENV || "dev"];
+const { config } = require("../config/index");
+
 const sequelize = new Sequelize(config.DBURL, {
   logging: false,
 });

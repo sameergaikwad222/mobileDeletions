@@ -1,13 +1,15 @@
 const express = require("express");
 const app = express();
 const user = require("./router/user");
-const config = require("./config/config.json")[process.env.NODE_ENV || "dev"];
+const { config } = require("./config/index");
 const { dbConnect } = require("./database/dbConnect");
+const { connectRabbit } = require("./Queues/connectRabbit");
 app.use("/user", user);
 
+var queueChannel;
 app.listen(config.PORT || 3000, async () => {
   try {
-    const resp = await dbConnect();
+    await dbConnect();
   } catch (error) {
     console.log(`Unable to connect to database. Error > : ${error}`);
     console.log("Closing an App.");
@@ -17,6 +19,4 @@ app.listen(config.PORT || 3000, async () => {
   console.log(`App is running on localhost:${config.PORT}`);
 });
 
-app.get("/", (req, res) => {
-  res.send("GET request to the homepage");
-});
+module.exports = { queueChannel };
