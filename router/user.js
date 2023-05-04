@@ -4,6 +4,7 @@ const { config } = require("../config/index");
 const { sequelize } = require("../database/dbConnect");
 const { pushToProcess } = require("../Queues/producer");
 const { connectRabbit } = require("../Queues/connectRabbit");
+const { logger } = require("../utility/logger");
 
 router.get("/getMobiles/:count", async (req, res) => {
   try {
@@ -29,7 +30,7 @@ router.get("/getMobiles/:count", async (req, res) => {
       res.status(404).send({ msg: "No data found.." });
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
     res.status(500).send({ error });
   }
 });
